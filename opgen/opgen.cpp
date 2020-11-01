@@ -1,8 +1,14 @@
 #include "opgen.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 uint32_t reg1, reg2, destReg, arithVal1, arithVal2;
+
+int doReset() {
+    printf("---reset---\n");
+    return 0;
+}
 
 /*
  * Initialize some basic values to avoid errors
@@ -113,4 +119,9 @@ extern "C" void make_test(arithmetic_op_t op, svBitVecVal *buf, uint32_t buf_wor
         buf32[i] = get_arithmetic(op, reg1, reg2, destReg);
     }
     buf32[const_addr/4-1] = 0x00000067u;   // JALR $
+}
+
+int doFinish() {
+    printf("---All tests passed---\n");
+    return 0;
 }

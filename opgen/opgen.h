@@ -37,6 +37,8 @@ extern void make_loadstore_test(svBitVecVal *buf, uint32_t buf_words);
 extern void make_test(arithmetic_op_t op, svBitVecVal *buf, uint32_t buf_words);
 extern void initGen();
 
+int doReset();
+int doFinish();
 void setReg(uint32_t, uint32_t, uint32_t, uint32_t);
 void setArith(uint32_t, uint32_t);
 uint32_t get_arithmetic(arithmetic_op_t, uint32_t, uint32_t, uint32_t);

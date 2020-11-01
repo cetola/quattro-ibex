@@ -1,12 +1,12 @@
 // Copyright lowRISC contributors.
-// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// Licensed under the Apache License, Version 2.0, see LICENSE fo
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * Single-port RAM with 1 cycle read/write delay, 32 bit words
  */
 module ram_1p #(
-    parameter int Depth = 128
+    parameter int Depth = 16384
 ) (
     input               clk_i,
     input               rst_ni,
@@ -22,12 +22,12 @@ module ram_1p #(
 
   localparam int Aw = $clog2(Depth);
 
-  logic [31:0] mem [Depth];
+  logic [31:0] mem [16384]; // pragma attribute mem ram_block 1
 
-  logic [Aw-1:0] addr_idx;
-  assign addr_idx = addr_i[Aw-1+2:2];
-  logic [31-Aw:0] unused_addr_parts;
-  assign unused_addr_parts = {addr_i[31:Aw+2], addr_i[1:0]};
+  logic [14-1:0] addr_idx;
+  assign addr_idx = addr_i[14-1+2:2];
+  logic [31-14:0] unused_addr_parts;
+  assign unused_addr_parts = {addr_i[31:14+2], addr_i[1:0]};
 
   always @(posedge clk_i) begin
     if (req_i) begin
@@ -80,7 +80,7 @@ module ram_1p #(
     // TODO: Allow 'val' to have other widths than 32 bit
     function int simutil_verilator_set_mem(input int index,
                                            input logic[31:0] val);
-      if (index >= Depth) begin
+      if (index >= 16384) begin
         return 0;
       end
 
