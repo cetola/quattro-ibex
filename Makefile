@@ -33,7 +33,7 @@ else
 endif
 
 waves:
-	vsim -classdebug +DBG-INSTR toptb
+	vsim -classdebug +DBG-INSTR ibex_core_tb 
 
 debug:
 	@echo "Running debug"

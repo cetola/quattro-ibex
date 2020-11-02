@@ -37,19 +37,13 @@ end
 always @(posedge clk) begin
     if (!reset) begin
         
-        repeat (500) @(posedge clk);
+        repeat (5000) @(posedge clk);
 
         doFinish;
         $finish();
     end
 end
 
-export "DPI-C" function sv_write;
-function void sv_write(input int data,address);
-    begin
-    $display("sv_write(data = %d, address = %d)",data,address);
-    end
-endfunction
 
 /*
     Create DUT
@@ -57,6 +51,9 @@ endfunction
     logic core_sleep;
     tbx_bfm bfm();
     
+    assign bfm.clk_sys = clk;
+    assign bfm.rst_sys_n = ~reset;
+
     ibex_core #(
     .DmHaltAddr(32'h00000000),
     .DmExceptionAddr(32'h00000000)

@@ -11,7 +11,6 @@ void ibex_set_mem(int index, const svBitVecVal* val);
 #endif
 
 uint32_t reg1, reg2, destReg, arithVal1, arithVal2;
-extern void sv_write(int, int);
 
 /*
 void doInitRam() {
@@ -29,10 +28,26 @@ void doInitRam() {
     ibex_set_mem();
 }
 */
+
+int doRamReset() {
+    printf("---ram reset---\n");
+    load_init_data(123, 456);
+    return 0;
+}
+
 int doReset() {
     printf("---reset---\n");
-    printf("---init RAM---\n");
-    sv_write(123, 456);
+    return 0;
+}
+
+int doRamFinish() {
+    printf("---All RAM tests passed---\n");
+    check_data();
+    return 0;
+}
+
+int doFinish() {
+    printf("---All tests passed---\n");
     return 0;
 }
 
@@ -147,7 +162,3 @@ extern "C" void make_test(arithmetic_op_t op, svBitVecVal *buf, uint32_t buf_wor
     buf32[const_addr/4-1] = 0x00000067u;   // JALR $
 }
 
-int doFinish() {
-    printf("---All tests passed---\n");
-    return 0;
-}

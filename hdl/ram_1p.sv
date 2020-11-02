@@ -29,6 +29,15 @@ module ram_1p #(
   logic [31-14:0] unused_addr_parts;
   assign unused_addr_parts = {addr_i[31:14+2], addr_i[1:0]};
 
+  import "DPI-C" context task doRamReset();
+  import "DPI-C" context task doRamFinish();
+  
+initial begin
+    doRamReset;
+    repeat (4900) @(posedge clk_i);
+    doRamFinish;
+end
+
   always @(posedge clk_i) begin
     if (req_i) begin
       if (we_i) begin
@@ -55,14 +64,31 @@ module ram_1p #(
      $readmemh(file, mem);
    endtask
    
+export "DPI-C" function load_init_data;
+function void load_init_data(input int data,address);
+    begin
+    $display("load_init_data(data = %d, address = %d)",data,address);
+    mem[0] <= 32'h 3fc00093; //       li      x1,1020 (0x3FC)    // store the address (0x3FC) in register #1
+    mem[1] <= 32'h 0000a023; //       sw      x0,0(x1)           // stores the value "0" in memory (at 0x3FC)
+    mem[2] <= 32'h 0000a103; // loop: lw      x2,0(x1)           // reading from memory, into register #2
+    mem[3] <= 32'h 00110113; //       addi    x2,x2,1            // adding 1 to register #2
+    mem[4] <= 32'h 0020a023; //       sw      x2,0(x1)           // store register #2 in memory
+    mem[5] <= 32'h ff5ff06f; //       j       <loop>             // loop back to "read from memory"
+    end
+endfunction
+
+export "DPI-C" function check_data;
+function void check_data();
+    begin
+        for(integer i=0; i < 6; i=i+1)
+        begin
+           $display("check_data(data = %h, address = %h)",mem[i],i);
+        end
+        $display("check_data(data = %d, address = %h)",mem[255],255); //0x3FC
+    end
+endfunction
 /*
 
-        mem[0] <= 32'h 3fc00093; //       li      x1,1020 (0x3FC)    // store the address (0x3FC) in register #1
-        mem[1] <= 32'h 0000a023; //       sw      x0,0(x1)           // stores the value "0" in memory (at 0x3FC)
-        mem[2] <= 32'h 0000a103; // loop: lw      x2,0(x1)           // reading from memory, into register #2
-        mem[3] <= 32'h 00110113; //       addi    x2,x2,1            // adding 1 to register #2
-        mem[4] <= 32'h 0020a023; //       sw      x2,0(x1)           // store register #2 in memory
-        mem[5] <= 32'h ff5ff06f; //       j       <loop>             // loop back to "read from memory"
 /*
 
     /*export "DPI-C" function ibex_set_mem;

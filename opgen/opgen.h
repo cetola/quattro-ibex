@@ -39,6 +39,10 @@ extern void initGen();
 
 int doReset();
 int doFinish();
+int doRamReset();
+int doRamFinish();
+void load_init_data(int, int);
+void check_data();
 void setReg(uint32_t, uint32_t, uint32_t, uint32_t);
 void setArith(uint32_t, uint32_t);
 uint32_t get_arithmetic(arithmetic_op_t, uint32_t, uint32_t, uint32_t);
