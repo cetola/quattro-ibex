@@ -76,19 +76,5 @@ interface tbx_bfm;
             data_rvalid  <= ~instr_req && data_req && mem_req;
         end
     end
-    
-    // Since the generator returns an array, use the verilator function to
-    // "write" that into memory. Note that we're taking advantage of a
-    // pre-made function of Ibex, which uses verilator:
-    // https://en.wikipedia.org/wiki/Verilator
-    // Instead, we have our own code generator which is much simpler.
-    function array_to_ram(input bit [63:0][31:0] ram_buf);
-        automatic int i;
-        for (i = 0; i < 64; i++)
-        begin
-            sp_ram.simutil_verilator_set_mem(i, ram_buf[i]);
-        end
-    endfunction
-
 endinterface
 

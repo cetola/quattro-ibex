@@ -1,3 +1,4 @@
+`timescale 1us / 1ns
 module ibex_core_tb;
 
 logic clk, reset;
@@ -23,8 +24,9 @@ begin
 end
 
 
-import "DPI-C" task doReset();
-import "DPI-C" task doFinish();
+import "DPI-C" context task doReset();
+import "DPI-C" context task doFinish();
+   
 
 initial begin
     @(posedge clk);
@@ -35,24 +37,24 @@ end
 always @(posedge clk) begin
     if (!reset) begin
         
-        @(posedge clk);
-        @(posedge clk);
-        @(posedge clk);
-        @(posedge clk);
-        @(posedge clk);
-        @(posedge clk);
-        @(posedge clk);
+        repeat (500) @(posedge clk);
 
         doFinish;
         $finish();
-        
     end
 end
+
+export "DPI-C" function sv_write;
+function void sv_write(input int data,address);
+    begin
+    $display("sv_write(data = %d, address = %d)",data,address);
+    end
+endfunction
 
 /*
     Create DUT
 */
-
+    logic core_sleep;
     tbx_bfm bfm();
     
     ibex_core #(
@@ -62,7 +64,7 @@ end
     .clk_i                 (bfm.clk_sys),
     .rst_ni                (bfm.rst_sys_n),
     
-    .test_en_i             ('b0),
+    .test_en_i             (1'b0),
     
     .hart_id_i             (32'b0),
     // First instruction executed is at 0x0 + 0x80
@@ -73,7 +75,7 @@ end
     .instr_rvalid_i        (bfm.instr_rvalid),
     .instr_addr_o          (bfm.instr_addr),
     .instr_rdata_i         (bfm.instr_rdata),
-    .instr_err_i           ('b0),
+    .instr_err_i           (1'b0),
     
     .data_req_o            (bfm.data_req),
     .data_gnt_i            (bfm.data_gnt),
@@ -83,7 +85,7 @@ end
     .data_addr_o           (bfm.data_addr),
     .data_wdata_o          (bfm.data_wdata),
     .data_rdata_i          (bfm.data_rdata),
-    .data_err_i            ('b0),
+    .data_err_i            (1'b0),
     
     .irq_software_i        (1'b0),
     .irq_timer_i           (1'b0),
@@ -91,10 +93,10 @@ end
     .irq_fast_i            (15'b0),
     .irq_nm_i              (1'b0),
     
-    .debug_req_i           ('b0),
+    .debug_req_i           (1'b0),
     
-    .fetch_enable_i        ('b1),
-    .core_sleep_o          ()
+    .fetch_enable_i        (1'b1),
+    .core_sleep_o          (core_sleep)
     );
     
     // single port "RAM" block for instruction and data storage

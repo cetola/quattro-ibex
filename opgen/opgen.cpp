@@ -2,11 +2,37 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#ifndef NO_DPI
+#include "tbxbindings.h"
+#else
+extern "C" {
+void ibex_set_mem(int index, const svBitVecVal* val);
+}
+#endif
 
 uint32_t reg1, reg2, destReg, arithVal1, arithVal2;
+extern void sv_write(int, int);
 
+/*
+void doInitRam() {
+    uint32_t buf32[6];
+    buf32[0] = 0x3fc00093; //       li      x1,1020 (0x3FC)    // store the address (0x3FC) in register #1
+    buf32[1] = 0x0000a023; //       sw      x0,0(x1)           // stores the value "0" in memory (at 0x3FC)
+    buf32[2] = 0x0000a103; // loop: lw      x2,0(x1)           // reading from memory, into register #2
+    buf32[3] = 0x00110113; //       addi    x2,x2,1            // adding 1 to register #2
+    buf32[4] = 0x0020a023; //       sw      x2,0(x1)           // store register #2 in memory
+    buf32[5] = 0xff5ff06f; //       j       <loop>             // loop back to "read from memory"
+    
+    for (int i = 0; i < 6; ++i) {
+        ibex_set_mem(i, (svBitVecVal *)&buf32[i]);
+    }
+    ibex_set_mem();
+}
+*/
 int doReset() {
     printf("---reset---\n");
+    printf("---init RAM---\n");
+    sv_write(123, 456);
     return 0;
 }
 

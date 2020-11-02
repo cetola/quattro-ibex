@@ -54,40 +54,24 @@ module ram_1p #(
      input string file;
      $readmemh(file, mem);
    endtask
+   
+/*
 
-    /*
-    This function is for debugging purposes. By simply forcing the system to
-    loop adding 1 to a register and to memory, we can observe a very basic
-    functionality completely removing the testbench code.
-   */
-   task init_basic_memory;
-        mem[0] = 32'h 3fc00093; //       li      x1,1020 (0x3FC)    // store the address (0x3FC) in register #1
-        mem[1] = 32'h 0000a023; //       sw      x0,0(x1)           // stores the value "0" in memory (at 0x3FC)
-        mem[2] = 32'h 0000a103; // loop: lw      x2,0(x1)           // reading from memory, into register #2
-        mem[3] = 32'h 00110113; //       addi    x2,x2,1            // adding 1 to register #2
-        mem[4] = 32'h 0020a023; //       sw      x2,0(x1)           // store register #2 in memory
-        mem[5] = 32'h ff5ff06f; //       j       <loop>             // loop back to "read from memory"
-    endtask
+        mem[0] <= 32'h 3fc00093; //       li      x1,1020 (0x3FC)    // store the address (0x3FC) in register #1
+        mem[1] <= 32'h 0000a023; //       sw      x0,0(x1)           // stores the value "0" in memory (at 0x3FC)
+        mem[2] <= 32'h 0000a103; // loop: lw      x2,0(x1)           // reading from memory, into register #2
+        mem[3] <= 32'h 00110113; //       addi    x2,x2,1            // adding 1 to register #2
+        mem[4] <= 32'h 0020a023; //       sw      x2,0(x1)           // store register #2 in memory
+        mem[5] <= 32'h ff5ff06f; //       j       <loop>             // loop back to "read from memory"
+/*
 
-  `ifdef VERILATOR
-    // Task for loading 'mem' with SystemVerilog system task $readmemh()
-    export "DPI-C" task simutil_verilator_memload;
-    // Function for setting a specific 32 bit element in |mem|
-    // Returns 1 (true) for success, 0 (false) for errors.
-    export "DPI-C" function simutil_verilator_set_mem;
-  `endif
-
-    // TODO: Allow 'val' to have other widths than 32 bit
-    function int simutil_verilator_set_mem(input int index,
-                                           input logic[31:0] val);
-      if (index >= 16384) begin
-        return 0;
+    /*export "DPI-C" function ibex_set_mem;
+    function void ibex_set_mem(input int index, input bit[31:0] val);
+      if (index < 16384) begin
+          mem[index] <= val;
       end
-
-      mem[index] = val;
-      return 1;
     endfunction
-
+*/
   `ifdef SRAM_INIT_FILE
     localparam MEM_FILE = `"`SRAM_INIT_FILE`";
     initial begin
