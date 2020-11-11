@@ -29,10 +29,8 @@ void doInitRam() {
 }
 */
 
-int doRamReset() {
+void doRamReset() {
     printf("---ram reset---\n");
-    load_init_data(123, 456);
-    return 0;
 }
 
 int doReset() {
@@ -40,10 +38,8 @@ int doReset() {
     return 0;
 }
 
-int doRamFinish() {
+void doRamFinish() {
     printf("---All RAM tests passed---\n");
-    check_data();
-    return 0;
 }
 
 int doFinish() {

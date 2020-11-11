@@ -29,14 +29,23 @@ module ram_1p #(
   logic [31-14:0] unused_addr_parts;
   assign unused_addr_parts = {addr_i[31:14+2], addr_i[1:0]};
 
-  import "DPI-C" context task doRamReset();
-  import "DPI-C" context task doRamFinish();
+  logic [32:0] count = 0;
+
+  import "DPI-C" context function void doRamReset();
+  import "DPI-C" context function void doRamFinish();
   
 initial begin
     doRamReset;
-    repeat (4900) @(posedge clk_i);
-    doRamFinish;
+   //TODO: load in proper data
+    load_init_data(1, 2);
 end
+
+    always @(posedge clk_i) begin
+        count <= count + 1;
+        if (count == 32'h1324) begin
+            doRamFinish;
+        end
+    end
 
   always @(posedge clk_i) begin
     if (req_i) begin
@@ -64,10 +73,8 @@ end
      $readmemh(file, mem);
    endtask
    
-export "DPI-C" function load_init_data;
 function void load_init_data(input int data,address);
     begin
-    $display("load_init_data(data = %d, address = %d)",data,address);
     mem[0] <= 32'h 3fc00093; //       li      x1,1020 (0x3FC)    // store the address (0x3FC) in register #1
     mem[1] <= 32'h 0000a023; //       sw      x0,0(x1)           // stores the value "0" in memory (at 0x3FC)
     mem[2] <= 32'h 0000a103; // loop: lw      x2,0(x1)           // reading from memory, into register #2
@@ -77,7 +84,6 @@ function void load_init_data(input int data,address);
     end
 endfunction
 
-export "DPI-C" function check_data;
 function void check_data();
     begin
         for(integer i=0; i < 6; i=i+1)
@@ -88,10 +94,7 @@ function void check_data();
     end
 endfunction
 /*
-
-/*
-
-    /*export "DPI-C" function ibex_set_mem;
+    export "DPI-C" function ibex_set_mem;
     function void ibex_set_mem(input int index, input bit[31:0] val);
       if (index < 16384) begin
           mem[index] <= val;

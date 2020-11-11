@@ -18,10 +18,10 @@ endif
 
 compile:
 ifeq ($(MODE),puresim)
-	vlog -f dut_tbx.f -dpiheader tbxbindings.h
-	vlog opgen/opgen.cpp
+	vlog -f dut.f -dpiheader tbxbindings.h
+	vlog hvl/opgen.cpp
 else
-	velanalyze -f dut_tbx.f
+	velanalyze -f dut.f
 	velcomp
 endif
 
