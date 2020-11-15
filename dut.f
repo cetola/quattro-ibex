@@ -1,5 +1,6 @@
 hdl/ibex_pkg.sv
 hdl/ibex_alu.sv
+hdl/ibex_pmp.sv
 hdl/ibex_compressed_decoder.sv
 hdl/ibex_controller.sv
 hdl/ibex_counter.sv
