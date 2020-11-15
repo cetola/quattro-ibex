@@ -1,7 +1,3 @@
-/*
-Simple TBX BFM
-*/
-
 `timescale 1us / 1ns
 interface tbx_bfm;
     
@@ -76,5 +72,6 @@ interface tbx_bfm;
             data_rvalid  <= ~instr_req && data_req && mem_req;
         end
     end
+
 endinterface
 

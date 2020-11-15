@@ -19,6 +19,5 @@ hdl/prim_clock_gating.v
 hdl/ibex_wb_stage.sv
 hdl/ibex_csr.sv
 hdl/ram_1p.sv
-hdl/ram_2p.sv
 hdl/ibex_core_tb.sv
 tbx_bfm.sv

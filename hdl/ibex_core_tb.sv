@@ -24,21 +24,26 @@ begin
 end
 
 
-import "DPI-C" context task doReset();
-import "DPI-C" context task doFinish();
-   
+import "DPI-C" context function void doReset();
+import "DPI-C" context function void doFinish();
+import "DPI-C" function void sendbuf (input bit [319:0] buffer, input int count);
+import "DPI-C" function void getbuf(output bit [319:0] stream, output int count, output bit eom);
+
+bit [47:0] buffer = 48'h68656c6c6f00;
+bit eom = 0;
+int remaining = 0;
+bit [7:0] stream;
 
 initial begin
     @(posedge clk);
     while(reset) @(posedge clk);
     doReset;
+    sendbuf(buffer, 6);
 end
 
 always @(posedge clk) begin
     if (!reset) begin
-        
         repeat (5000) @(posedge clk);
-
         doFinish;
         $finish();
     end
