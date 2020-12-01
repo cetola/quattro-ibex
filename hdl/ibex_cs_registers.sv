@@ -1017,7 +1017,7 @@ module ibex_cs_registers #(
       // W = 1, R = 0 is a reserved combination. For now, we force W to 0 if R == 0
       assign pmp_cfg_wdata[i].write = &csr_wdata_int[(i%4)*PMP_CFG_W+:2];
       assign pmp_cfg_wdata[i].read  = csr_wdata_int[(i%4)*PMP_CFG_W];
-
+      //QuattroIbex: Note: Hard Wire, disconnect
       ibex_csr #(
         .Width      ($bits(pmp_cfg_t)),
         .ShadowCopy (1'b0),
@@ -1027,7 +1027,8 @@ module ibex_cs_registers #(
         .rst_ni     (rst_ni),
         .wr_data_i  ({pmp_cfg_wdata[i]}),
         .wr_en_i    (pmp_cfg_we[i]),
-        .rd_data_o  (pmp_cfg[i]),
+        //.rd_data_o  (pmp_cfg[i]),
+        .rd_data_o  (),
         .rd_error_o ()
       );
 
@@ -1055,6 +1056,11 @@ module ibex_cs_registers #(
         .rd_data_o  (pmp_addr[i]),
         .rd_error_o ()
       );
+    
+      // QuattroIbex: Note: Hard Wire:
+      // {L, WIRI, A, X, W, R}:
+      // {pmp_cfg[i].lock, 2'b00, pmp_cfg[i].mode,pmp_cfg[i].exec, pmp_cfg[i].write, pmp_cfg[i].read};
+      assign pmp_cfg[i] = {1'b1, 2'b00, 2'b11, 1'b1, 1'b1, 1'b1};
 
       assign csr_pmp_cfg_o[i]  = pmp_cfg[i];
       assign csr_pmp_addr_o[i] = {pmp_addr[i],2'b00};

@@ -19,24 +19,28 @@ void doInitRam() {
     }
 }
 
-
+/*
+ * Fills the RAM with data
+ */
 void doReset() {
     svSetScope(svGetScopeFromName("ibex_core_tb.sp_ram"));
     printf("---reset---\n");
     doInitRam();
 }
 
+/*
+ * Calls the checker. For now, simply looks at the end state of memory.
+ */
 void doFinish() {
     svSetScope(svGetScopeFromName("ibex_core_tb.sp_ram"));
     ibex_check_mem();
     printf("---All tests passed---\n");
 }
 
-//
-// DPI import function 'sendbuf':
-// - used to send the DUT outout bytes back to HVL 
-//   which are then displayed on screen
-//
+/*
+ * Provides PMP config and address range data for the checker
+ * NOTE: RV32: the pmpaddr is the top 32 bits of a 34 bit PMP address
+ */ 
 void sendbuf(const svBitVecVal* buffer, int count) {
 
   svBitVecVal b = 0; 
@@ -50,33 +54,10 @@ void sendbuf(const svBitVecVal* buffer, int count) {
   fflush(stdout);
 }
 
+/*
+ * Will eventually (possibly) look at the output of the checker and decide how
+ * to "better" randomize the config and address ranges.
+ */
 void getbuf(svBitVecVal* buf, int* count, svBit* eom) {
 
-  // Open file "msg" and start streaming in the bytes..
-  if(!in_msg) {
-      printf("HVL: Opening file \"msg\"..\n");
-      in_msg = fopen("msg", "r");
-  }
-
-  char b;
-  int i = 0;
-  while((b = fgetc(in_msg)) != EOF) {
-    svPutPartselBit(buf, b, 8*i, 8);
-    //printf("%c",b);
-    if(i==39) {
-        *count = 40;
-        *eom = 0;
-        printf("HVL: Sending 40 bytes..\n");
-        return;
-    }
-    i++;
-  }
-
-  // Send the remaining bytes with eom.
-  svPutPartselBit(buf, 0, 8*i, 8);
-  printf("HVL: Sending last %d bytes.", i+1);
-  *count = i + 1;
-  *eom = 1;
-
-  return;
 }

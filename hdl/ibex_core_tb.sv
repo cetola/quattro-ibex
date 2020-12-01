@@ -23,12 +23,39 @@ begin
     #20 reset = 0;
 end
 
-
+/*
+    IMPORT context function doReset
+    Waits for reset line to be pulled low and then calls the imported function
+    doReset which in turn calls the export function doRamReset on the ram_1p
+    module. This step populates the RAM with aseembly code.
+*/
 import "DPI-C" context function void doReset();
+
+/*
+    IMPORT context function doFinish
+    Called after N number of runs. Calls the export function checkMem, which
+    verifies that the memory was protected correctly. See ram_1 module for the
+    export function.
+*/
 import "DPI-C" context function void doFinish();
+
+/*
+    IMPORT function sendbuf
+    Send a buffer to the HVL code. Just a stub for now. Will be resposible for
+    providing the HVL with the configuration and address range data used by the
+    checker.
+*/
 import "DPI-C" function void sendbuf (input bit [319:0] buffer, input int count);
+
+/*
+    IMPORT function getbuf
+    Probably won't get to this step, so this is a stub. It should check the
+    output of the checker and decide what assembly to generate next, and which
+    config settings to randomize for the next round fo tests.
+*/
 import "DPI-C" function void getbuf(output bit [319:0] stream, output int count, output bit eom);
 
+// Character string: hello\n
 bit [47:0] buffer = 48'h68656c6c6f00;
 bit eom = 0;
 int remaining = 0;
