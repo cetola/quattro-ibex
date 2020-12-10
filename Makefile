@@ -35,11 +35,12 @@ else
 endif
 
 waves:
-	vsim -classdebug +DBG-INSTR ibex_core_tb 
+	vsim -do debug.do -classdebug +DBG-INSTR ibex_core_tb 
 
 debug:
 	@echo "Running debug"
-	vsim -c +DBG-INSTR toptb -do "run -all"
+	MTI_VCO_MODE=64; export MTI_VCO_MODE; \
+	vsim -c +debug ibex_core_tb -do "run -all" | tee transcript.puresim
 
 clean:
 	rm -rf edsenv transcript tmon.log vsim.wlf report.* modelsim.ini transcript.veloce transcript.puresim veloce.map veloce.wave velrunopts.ini work.puresim work.veloce veloce.out veloce.med veloce.log tbxbindings.h dpi.so

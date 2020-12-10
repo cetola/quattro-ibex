@@ -40,20 +40,20 @@ import "DPI-C" context function void doReset();
 import "DPI-C" context function void doFinish();
 
 /*
-    IMPORT function sendbuf
+    IMPORT function sendCfg
     Send a buffer to the HVL code. Just a stub for now. Will be resposible for
     providing the HVL with the configuration and address range data used by the
     checker.
 */
-import "DPI-C" function void sendbuf (input bit [319:0] buffer, input int count);
+import "DPI-C" function void sendCfg (input bit [1023:0] buffer, input int count);
 
 /*
-    IMPORT function getbuf
+    IMPORT function getCfg
     Probably won't get to this step, so this is a stub. It should check the
     output of the checker and decide what assembly to generate next, and which
     config settings to randomize for the next round fo tests.
 */
-import "DPI-C" function void getbuf(output bit [319:0] stream, output int count, output bit eom);
+import "DPI-C" function void getCfg(output bit [1023:0] stream, output int count, output bit eom);
 
 // Character string: hello\n
 bit [47:0] buffer = 48'h68656c6c6f00;
@@ -65,12 +65,12 @@ initial begin
     @(posedge clk);
     while(reset) @(posedge clk);
     doReset;
-    sendbuf(buffer, 6);
+    sendCfg(buffer, 6);
 end
 
 always @(posedge clk) begin
     if (!reset) begin
-        repeat (5000) @(posedge clk);
+        repeat (500000) @(posedge clk);
         doFinish;
         $finish();
     end

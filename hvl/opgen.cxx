@@ -33,15 +33,20 @@ void doReset() {
  */
 void doFinish() {
     svSetScope(svGetScopeFromName("ibex_core_tb.sp_ram"));
-    ibex_check_mem();
-    printf("---All tests passed---\n");
+    int err = 0;
+    ibex_check_mem(err);
+    if(err == 0) {
+        printf("---All tests passed---\n");
+    } else {
+        printf("---Tests Failed---\n");
+    }
 }
 
 /*
  * Provides PMP config and address range data for the checker
  * NOTE: RV32: the pmpaddr is the top 32 bits of a 34 bit PMP address
  */ 
-void sendbuf(const svBitVecVal* buffer, int count) {
+void sendCfg(const svBitVecVal* buffer, int count) {
 
   svBitVecVal b = 0; 
   for(int i=count;i>0;i--) {
@@ -58,6 +63,6 @@ void sendbuf(const svBitVecVal* buffer, int count) {
  * Will eventually (possibly) look at the output of the checker and decide how
  * to "better" randomize the config and address ranges.
  */
-void getbuf(svBitVecVal* buf, int* count, svBit* eom) {
+void getCfg(svBitVecVal* buf, int* count, svBit* eom) {
 
 }
