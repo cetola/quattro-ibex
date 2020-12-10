@@ -1,7 +1,7 @@
 
 # 
 
-# *** Wed Dec  9 20:49:52 PST 2020 *** Velrun Client Id : 0 ***
+# *** Wed Dec  9 21:04:03 PST 2020 *** Velrun Client Id : 0 ***
 # **************************************************
 #         Software Version  : 19.0.2      
 # **************************************************
@@ -18,7 +18,7 @@
 # Info! : : Sourcing veloce.med/compileopts.ini
 # Info! : : Sourcing velrunopts.ini
 # Info!     [RTS-20008]: : Connecting to emulator 'Greg' ...
-# Info!     [RTS-20007]: : SessionId for this session is Greg_141
+# Info!     [RTS-20007]: : SessionId for this session is Greg_142
 # Info!     [TCLC-5502]: : Successfully connected to emulator.
 # Info!     [TCLC-5501]: : project database locked.
 # Info!     [TCLC-5501]: : Trace mode is set to SSR
@@ -32,15 +32,15 @@ Veloce 1> # Connected to emulator Greg
 #                       
 # Info!     [RTS-20110]: : Waiting for EHS-EDS connection to establish...
 # Info!     [RTS-20110]: : EHS-EDS connection established. (time taken 1.19 s)
-# Info!     [RTS-20015]: : Resource initialization done (time taken 42.66 s)
+# Info!     [RTS-20015]: : Resource initialization done (time taken 42.57 s)
 # Info!     [RTS-20018]: : Freeze design for setup started ...
-# Info!     [RTS-20018]: : Freeze design for setup done (time taken 0.64 s)
+# Info!     [RTS-20018]: : Freeze design for setup done (time taken 0.62 s)
 # Info!     [RTS-20019]: : Clock routing started ...
-# Info!     [RTS-20019]: : Clock routing done (time taken 0.05 s)
+# Info!     [RTS-20019]: : Clock routing done (time taken 0.33 s)
 # Info!     [RTS-20032]: : Clock:ibex_core_tb.Uclock Domain=0 Freq=2000.0 kHz
-#                        (Hi=19 Lo=31)
+#                        (Hi=18 Lo=32)
 # Info!     [RTS-20016]: : Trace system turn on started ...
-# Info!     [RTS-20016]: : Trace system turn on done (time taken 0.11 s)
+# Info!     [RTS-20016]: : Trace system turn on done (time taken 0.38 s)
 # Info!     [RTS-20024]: : Reset all used memories started ...
 # Info!     [RTS-20024]: : Reset all used memories done (time taken 0.03 s)
 # Info!       [CS-5156]: : Collecting memory contents from 'rtlc generated mem cont file'.
@@ -52,7 +52,7 @@ Veloce 1> # Connected to emulator Greg
 # Info!     [RTS-20066]: : Trigger position: 50, Current trace depth: 100000
 #                        cycles, Maximum Trace Depth: 994055 cycles.
 #                       
-# Info!     [RTS-20044]: : Store Interrupt config done (time taken 0.60 s)
+# Info!     [RTS-20044]: : Store Interrupt config done (time taken 0.31 s)
 # Info!     [RTS-20041]: : Trace flush started ...
 # Info!     [RTS-20041]: : Trace flush done(time taken 0.05 s)
 # Info!     [RTS-20016]: : Trace system turn on started ...
@@ -74,7 +74,7 @@ Veloce 1> # Design configured
 #                        "circe.ece.pdx.edu" Attached to existing session
 # Info!     [TCLC-5501]: : Single User Mode. Other users will not be able to
 #                        attach to this session.
-# Comodel client with pid "219889" has been launched on host "circe" from directory "/u/cetola/code/595/quattro-ibex".
+# Comodel client with pid "4666" has been launched on host "circe" from directory "/u/cetola/code/595/quattro-ibex".
 # Info!     [TBXR-6571]: : TAPI slot number used : 4
 # Info!     [TCLC-5654]: : Will work with the clock "ibex_core_tb.Uclock"
 # 
@@ -104,29 +104,29 @@ Veloce 1> # Design configured
 # check_data(data = 00110113, address = 00000003)
 # check_data(data = 0020a023, address = 00000004)
 # check_data(data = ff5ff06f, address = 00000005)
-# check_data(data =      35713, address = 000000ff)
+# check_data(data =     357142, address = 000000ff)
 # ---All tests passed---
 # =============================================================================
 #                             SIMULATION STATISTICS                            
 # =============================================================================
-# Simulation finished at time 10000030000000 ps
+# Simulation finished at time 100000030000000 ps
 # 
-# Total number of TBX clocks:                                      1014477
-# Total number of TBX clocks spent in HDL time advancement:        1000003
+# Total number of TBX clocks:                                      10013355
+# Total number of TBX clocks spent in HDL time advancement:        10000003
 # Total number of TBX clocks spent in HDL due to callee execution: 14
-# Percentage TBX clocks spent in HDL time advance:                 98.57 %
+# Percentage TBX clocks spent in HDL time advance:                 99.87 %
 # -----------------------------------------------------------------------------
-# Total time spent:                                                2.38 seconds.
+# Total time spent:                                                6.86 seconds.
 # -----------------------------------------------------------------------------
 # 
 # Info!     [TCLC-5501]: : Emulation stopped.
-# Info!     [TCLC-5501]: : Current Simulation Time: 10000030000000 ps
-# Info!     [TCLC-5501]: : 1006644 cycles run. Clock : ibex_core_tb.Uclock.
-# Info!     [TCLC-5501]: : 1015479 cycles run till now. Clock :
+# Info!     [TCLC-5501]: : Current Simulation Time: 100000030000000 ps
+# Info!     [TCLC-5501]: : 10005547 cycles run. Clock : ibex_core_tb.Uclock.
+# Info!     [TCLC-5501]: : 10014562 cycles run till now. Clock :
 #                        ibex_core_tb.Uclock
 # 
 # Info! : : Quitting Comodel Client.
-# Comodel application with pid "219889" exited successfully with exit code "0".
+# Comodel application with pid "4666" exited successfully with exit code "0".
 # Info!     [TCLC-5501]: : Disconnected from emulator.
 # Info!     [TCLC-5501]: : project database unlocked.
 # Info!     [TCLC-5663]: : Shutting down the user runtime session.
